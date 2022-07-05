@@ -20,6 +20,12 @@ export default function Product({product}) {
                     <Rating value={product.rating} text={`${product.numReviews} reviews`}/>
                 </Card.Text>
 
+                <Card.Text as='div'>
+                    <span>{product.numReviews && `${product.numReviews} reviews`}</span>
+                </Card.Text>
+
+
+
                 <Card.Text as='h3'>${product.price}</Card.Text>
 
             </Card.Body>

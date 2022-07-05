@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {LinkContainer} from "react-router-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -6,16 +6,24 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Rating from "../components/Rating";
-import products from "../products";
+import axios from "axios";
+
 import {useParams} from "react-router-dom";
 import {Image} from "react-bootstrap";
 
 
-export default function ProductScreen({match}) {
+export default function ProductScreen() {
 
     const {id} = useParams();
 
-    const product = products.find(product => product._id === id);
+    const [product,setProduct] = useState({});
+    useEffect(()=>{
+        const fetchProduct=async ()=>{
+            const {data}=await axios.get(`/api/products/${id}`);
+            setProduct(data)
+        }
+        fetchProduct()
+    },[])
 
 
     return (
@@ -40,8 +48,13 @@ export default function ProductScreen({match}) {
                             <h3>{product.name}</h3>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <Rating value={product.rating} text={`${product.numReviews} reviews`}/>
+                            <Rating value={product.rating}/>
                         </ListGroup.Item>
+
+                        <ListGroup.Item>
+                            <span>{product.numReviews && `${product.numReviews} reviews`}</span>
+                        </ListGroup.Item>
+
 
                         <ListGroup.Item>
                             Description: {product.description}
